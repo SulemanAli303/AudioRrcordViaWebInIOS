@@ -1,0 +1,78 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="apple-mobile-web-capable" content="yes">
+    <title>WebAudioTrack.js Demo</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="WebAudioTrack.js"></script>
+</head>
+<body>
+
+<div id="container">
+
+    <div id="player">
+
+  
+        <button id="btn-start-recording">Start Recording</button>
+        <button id="btn-stop-recording" disabled>Stop Recording</button>
+        <br>
+        <button id="btn-play-recording" disabled>Play Recording</button>
+        <button id="btn-play-file">Play File</button>
+        <button id="btn-play-both" disabled>Play Both</button>
+
+    </div>
+</div>
+
+<script>
+
+    var audioTrack = new WebAudioTrack();
+    var audioTrackFile = new WebAudioTrack();
+
+    var startButton = document.getElementById('btn-start-recording');
+    var stopButton = document.getElementById('btn-stop-recording');
+    var playRecButton = document.getElementById('btn-play-recording');
+    var playFileButton = document.getElementById('btn-play-file');
+    var playBothButton = document.getElementById('btn-play-both');
+
+    startButton.addEventListener("click", function() {
+        audioTrack.startRecording(function() {
+            stopButton.disabled = false;
+            startButton.disabled = true;
+        });
+    });
+
+    stopButton.addEventListener("click", function() {
+        audioTrack.stopRecording(function() {
+            startButton.disabled = false;
+            stopButton.disabled = true;
+            playRecButton.disabled = false;
+            playBothButton.disabled = false;
+        });
+    });
+
+    playRecButton.addEventListener("click", function() {
+        audioTrack.play();
+    });
+
+    playFileButton.addEventListener("click", function() {
+        audioTrackFile.play();
+    });
+
+    playBothButton.addEventListener("click", function() {
+        var newTrack = new WebAudioTrack();
+        newTrack.loadUrl("audio-2.m4a")
+            .then(function() {
+                newTrack.appendAudioFromTrack(audioTrack);
+                newTrack.play();
+            })
+    });
+
+    audioTrackFile.loadUrl("audio-1.m4a")
+
+
+</script>
+</body>
+</html>
